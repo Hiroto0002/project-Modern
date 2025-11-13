@@ -1,8 +1,57 @@
+/* 基本のリセットとフォントの設定 */
 body {
-  background-color: #7c7e7d; /* 薄い背景色 */
-  color: #fff;
-  display: flex;
-  justify-content: center; /* コンテンツを水平中央に配置 */
-  align-items: flex-start; /* コンテンツを上から開始 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* 薄い背景色 */
+    color: #333; /* 文字の色 */
+    display: flex;
+    justify-content: center; /* コンテンツを水平中央に配置 */
+    align-items: flex-start; /* コンテンツを上から開始 */
+    min-height: 100vh; /* 画面の高さ全体 */
+    margin: 0;
+    padding-top: 50px; /* 上部に少しスペース */
+}
 
+/* アプリケーション全体を囲むコンテナ */
+.container {
+    background-color: #ffffff; /* 白い背景 */
+    padding: 30px;
+    border-radius: 12px; /* 角を丸く */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* 影で立体感を出す */
+    width: 100%;
+    max-width: 450px; /* 最大幅を設定 */
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+/* --- 入力エリアのスタイル --- */
+.input-area {
+    display: flex;
+    gap: 10px; /* 要素間のスペース */
+    margin-bottom: 20px;
+}
+
+#task-input {
+    flex-grow: 1; /* 残りのスペースを全て使用 */
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s; /* ホバー時のアニメーション準備 */
+}
+
+#add-button {
+    background-color: #3498db; /* 青色のボタン */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    /* 簡単なアニメーション */
+    transition: background-color 0.2s, transform 0.1s;
 }

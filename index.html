@@ -2,23 +2,24 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>EGToDoList</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプルな To-Do リスト</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div>
-        <h1>EGToDoList</h1>
-        <div>
-            <input type="text" id="task-input" placeholder="新しいタスクを入力...">
+
+    <div class="container">
+        <h1>シンプルな To-Do リスト</h1>
+
+        <div class="input-area">
+            <input type="text" id="task-input" placeholder="新しいタスクを入力..." aria-label="新しいタスク">
             <button id="add-button">追加</button>
         </div>
+
         <ul id="task-list">
-            <li>タスク1</li>
-            <li>タスク2</li>
-            <li>タスク3</li>
-        </ul>
+            </ul>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
