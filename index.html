@@ -1,37 +1,24 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>サンプルページ</title>
-   <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>EGToDoList</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-   <header>
-      <h1>ようこそ、サンプルページへ</h1>
-   </header>
-   <main>
-      <div class="container">
-            <section class="intro">
-                  <h2>イントロダクション</h2>
-                  <p>これはサンプルのHTMLページです。ここにコンテンツを追加してください。</p>
-                  <div class="inputArea">
-                        <input type="text" id="taskInput" placeholder="ここに入力してください">
-                        <button type="button" id="addButton">追加</button>
-                  </div>
-            </section>
-            <section class="taskList">
-                  <h2>特徴</h2>
-                  <ul>
-                  <li>シンプルなデザイン</li>
-                  <li>レスポンシブレイアウト</li>
-                  <li>使いやすいナビゲーション</li>
-                  </ul>
-            </section>
-      </div>
-      </main>
-      <footer>
-         <p>&copy; 2025 サンプルページ</p>
-      </footer>
+    <div>
+        <h1>EGToDoList</h1>
+        <div>
+            <input type="text" id="task-input" placeholder="新しいタスクを入力...">
+            <button id="add-button">追加</button>
+        </div>
+        <ul id="task-list">
+            <li>タスク1</li>
+            <li>タスク2</li>
+            <li>タスク3</li>
+        </ul>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

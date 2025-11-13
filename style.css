@@ -1,0 +1,8 @@
+body {
+  background-color: #7c7e7d; /* 薄い背景色 */
+  color: #fff;
+  display: flex;
+  justify-content: center; /* コンテンツを水平中央に配置 */
+  align-items: flex-start; /* コンテンツを上から開始 */
+
+}
