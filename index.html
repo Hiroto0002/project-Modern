@@ -8,9 +8,16 @@
     <body>
         <div class="container">
             <h1>タスク管理</h1>
-            <div>
+            <div class="input-area">
                 <input type="text" id="todo-input" placeholder="新しいタスクを入力...">
                 <button id="add-button">追加</button>  
+            </div>
+            <div class="storage-gauge-area">
+                <p>ストレージ使用量:</p>
+                <div class="gauge-bar-container">
+                    <div id="storage-gauge-fill" class="gauge-bar-fill"></div>
+                </div>
+                <span id="storage-size-text">0 Bytes / 約 5 MB</span>
             </div>
             <ul id="todo-list">
                 

@@ -1,143 +1,99 @@
-// 1. HTML要素の取得
-// DOM（Document Object Model）を操作するために、HTMLに付けたIDを使って要素を取得します
+// =================================================================
+// 1. HTML要素の取得と定数
+// =================================================================
 const todoInput = document.getElementById('todo-input');
 const addButton = document.getElementById('add-button');
 const todoList = document.getElementById('todo-list');
+const gaugeFill = document.getElementById('storage-gauge-fill');
+const sizeText = document.getElementById('storage-size-text');
 
-// 2. イベントリスナーの設定
-// 「追加」ボタンがクリックされたときに、addTask関数を実行するように設定します
-addButton.addEventListener('click', addTask);
+const MAX_STORAGE_BYTES = 200; // ゲージの最大容量 (約5MB)
 
-// 入力フィールドでEnterキーが押されたときも、addTask関数を実行するように設定します
-todoInput.addEventListener('keypress', function(event) {
-    // keycode 13 または key 'Enter' は、Enterキーが押されたことを示します
-    if (event.key === 'Enter') {
-        addTask();
+// =================================================================
+// 2. ストレージ容量計算とゲージ表示の関数
+// =================================================================
+function getStorageSize() {
+    let totalBytes = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        if (key && value) {
+            totalBytes += key.length * 2;
+            totalBytes += value.length * 2;
+        }
     }
-});
+    return totalBytes;
+}
 
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
 
-// 3. タスクを追加する関数
-function addTask() {
-    // ユーザーが入力したテキストを取得し、両端の空白を削除します
-    const taskText = todoInput.value.trim();
-
-    // 入力が空だった場合、タスクを追加せずに処理を終了します
-    if (taskText === '') {
-        alert('タスクを入力してください！');
-        return;
-    }
-
-    // 新しいタスクのリストアイテム（<li>）を作成します
-    const listItem = document.createElement('li');
+function displayStorageSize() {
+    const sizeInBytes = getStorageSize();
+    const readableSize = formatBytes(sizeInBytes);
     
-    // タスクの内容を表示する要素を作成
-    const taskContent = document.createElement('span');
-    taskContent.textContent = taskText;
-    taskContent.classList.add('task-content');
-
-    // 削除ボタンを作成します
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = '削除';
-    deleteButton.classList.add('delete-btn');
-
-    // 削除ボタンがクリックされたときの処理を設定します
-    deleteButton.addEventListener('click', function() {
-        // このボタンの親要素（<li>）をリストから削除します
-        todoList.removeChild(listItem);
-    });
-
-    // タスクをクリックすると、完了（取り消し線）にする機能を追加します
-    taskContent.addEventListener('click', function() {
-        // 'completed'というクラスを追加したり削除したりして、見た目を切り替えます
-        listItem.classList.toggle('completed');
-    });
-
-    // 作成した要素を<li>に追加します
-    listItem.appendChild(taskContent);
-    listItem.appendChild(deleteButton);
-
-    // <li>をTODOリスト（<ul>）の最後に追加します
-    todoList.appendChild(listItem);
-
-    // タスクを追加した後、入力フィールドを空にします
-    todoInput.value = '';
-    todoInput.focus();
+    let percentage = (sizeInBytes / MAX_STORAGE_BYTES) * 100;
+    
+    // 💡 修正 2: 容量超過時のテキストと色の設定
+    if (percentage > 100) {
+        percentage = 100; // ゲージの幅は100%で止める
+        gaugeFill.style.backgroundColor = '#dc3545'; // 赤色
+        
+        // 警告メッセージを表示
+        sizeText.textContent = "容量がでかすぎるッ!!!"; 
+        sizeText.style.color = '#dc3545'; // テキストの色も赤にする
+        
+    } else if (percentage > 50) {
+        gaugeFill.style.backgroundColor = '#ffc107'; // オレンジ
+        sizeText.style.color = '#777'; // 通常のテキスト色に戻す
+        sizeText.textContent = `${readableSize} / ${formatBytes(MAX_STORAGE_BYTES)}`;
+    } else {
+        gaugeFill.style.backgroundColor = '#007bff'; // 青
+        sizeText.style.color = '#777'; // 通常のテキスト色に戻す
+        sizeText.textContent = `${readableSize} / ${formatBytes(MAX_STORAGE_BYTES)}`;
+    }
+    
+    gaugeFill.style.width = `${percentage}%`; 
 }
 
-// --- 新しい関数 ---
-// タスクデータをlocalStorageから読み込み、HTMLに表示する
-function loadTasks() {
-    // localStorageから 'tasks' というキーで保存されているデータを取得
-    // データがない場合は空の配列 [] を使う
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+// =================================================================
+// 3. データの保存・読み込み関数
+// =================================================================
 
-    // 取得したタスク一つ一つについて、HTML要素を作成して表示する
-    tasks.forEach(task => {
-        // loadTasksは、addTaskがHTML要素を作る部分だけを再利用する
-        createTaskElement(task.text, task.isCompleted);
-    });
-}
-
-// タスクデータをlocalStorageに保存する
 function saveTasks() {
-    // 現在のTODOリストの<li>要素を全て取得する
     const listItems = todoList.querySelectorAll('li');
     const tasks = [];
 
-    // <li>一つ一つからタスクのテキストと完了状態を取得
     listItems.forEach(item => {
         tasks.push({
-            // タスクのテキストを取得
             text: item.querySelector('.task-content').textContent,
-            // 'completed'クラスがあるか（完了状態か）をチェック
             isCompleted: item.classList.contains('completed')
         });
     });
 
-    // JavaScriptのオブジェクト（tasks）を文字列（JSON形式）に変換して保存
     localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-// -----------------
-
-
-// 2. イベントリスナーの設定 (saveTasks呼び出しを追加)
-addButton.addEventListener('click', addTask);
-todoInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        addTask();
-    }
-});
-
-// アプリが起動したときにタスクを読み込む！
-document.addEventListener('DOMContentLoaded', loadTasks);
-
-
-// 3. タスクを追加する関数 (修正)
-function addTask() {
-    const taskText = todoInput.value.trim();
-    if (taskText === '') {
-        alert('タスクを入力してください！');
-        return;
-    }
-
-    // HTML要素を作成してリストに追加
-    createTaskElement(taskText, false); // 新規タスクなので完了状態は false
-
-    // データの保存を実行
-    saveTasks(); 
-
-    // 入力フィールドを空にしてフォーカスを戻す (変更なし)
-    todoInput.value = '';
-    todoInput.focus();
+    displayStorageSize(); // 保存後にゲージを更新！
 }
 
-// 4. HTML要素を作成する共通関数 (新規作成)
-// この関数が<li>要素を作り、イベントを設定する役割を担います
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach(task => {
+        createTaskElement(task.text, task.isCompleted);
+    });
+}
+
+// =================================================================
+// 4. HTML要素の生成・操作関数
+// =================================================================
+
 function createTaskElement(text, isCompleted) {
     const listItem = document.createElement('li');
     
-    // 完了状態であれば 'completed' クラスを追加
     if (isCompleted) {
         listItem.classList.add('completed');
     }
@@ -150,19 +106,56 @@ function createTaskElement(text, isCompleted) {
     deleteButton.textContent = '削除';
     deleteButton.classList.add('delete-btn');
 
-    // --- イベントリスナーの処理を修正 ---
+    // 削除イベント
     deleteButton.addEventListener('click', function() {
         todoList.removeChild(listItem);
-        saveTasks(); // 削除したら保存！
+        saveTasks(); // 削除後に保存
     });
 
+    // 完了/未完了の切り替えイベント
     taskContent.addEventListener('click', function() {
         listItem.classList.toggle('completed');
-        saveTasks(); // 完了状態が変わったら保存！
+        saveTasks(); // 状態変更後に保存
     });
-    // ---------------------------------
 
     listItem.appendChild(taskContent);
     listItem.appendChild(deleteButton);
     todoList.appendChild(listItem);
 }
+
+
+function addTask() {
+    const taskText = todoInput.value.trim();
+    if (taskText === '') {
+        alert('タスクを入力してください！');
+        return;
+    }
+
+    createTaskElement(taskText, false); // 新規タスクを作成
+    saveTasks(); // 保存を実行 (この中でゲージも更新されます)
+
+    todoInput.value = '';
+    todoInput.focus();
+}
+
+
+// =================================================================
+// 5. イベントリスナーとアプリの起動処理 (すべてここに集約)
+// =================================================================
+
+// 「追加」ボタンのクリックイベント
+addButton.addEventListener('click', addTask);
+
+// 入力フィールドでのEnterキーイベント
+todoInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+
+// ページが完全に読み込まれたときにタスクを読み込み、ゲージを表示
+document.addEventListener('DOMContentLoaded', function() {
+    loadTasks();
+    displayStorageSize(); 
+});
+
