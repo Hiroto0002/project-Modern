@@ -20,7 +20,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 450px;
+    max-width: 600px;
     flex-grow: 1;
     margin: 0 auto; 
     margin-bottom: 50px;
@@ -209,6 +209,23 @@ h1 {
     opacity: 0.7;
 }
 
+#main-footer a {
+    color: #6e6c6c;
+    text-decoration: none;
+    margin-left: 8px;
+    transition: color 0.3s;
+
+}
+
+#main-footer a:hover {
+    color: #ffffff;
+}
+
+#main-footer .fab.fa-github {
+    font-size: 32px;
+    vertical-align: middle;
+}
+
 /* ================================================================= */
 /* モバイル対応 (レスポンシブデザイン) */
 /* ================================================================= */
@@ -247,4 +264,13 @@ h1 {
         width: 100%;
         margin-left: 0; /* 横並びのときのマージンを削除 */
     }
+
+    #main-footer a {
+    color: #ffffff;
+    }
+
+    #main-footer .fab.fa-github {
+    font-size: 18px;
+    }
 }
+
