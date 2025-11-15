@@ -1,22 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #999898;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding-top: 50px;
-
+    padding-top: 0;
 }
 
 .container {
     background-color: aliceblue;
     padding: 30px;
+    margin: 0 auto;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 450px;
+    flex-grow: 1;
+    margin: 0 auto; 
+    margin-bottom: 50px;
 }
 
 h1 {
@@ -153,3 +160,91 @@ h1 {
     
 }
 
+.reset-text {
+    font-size: 12px;
+    color: #515151;
+}
+
+#main-header {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    
+}
+
+.header-content {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 18px;
+}
+
+.user-info {
+    font-size: 14px;
+    opacity: 0.8;
+    padding-right: 18px;
+}
+
+#main-footer {
+    width: 100%;
+    background-color: #333; 
+    color: #f0f0f0;
+    text-align: center;
+    padding: 15px 0;
+}
+
+#main-footer p {
+    width: 0 auto;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* ================================================================= */
+/* モバイル対応 (レスポンシブデザイン) */
+/* ================================================================= */
+
+@media (max-width: 600px) {
+    /* 1. コンテナの左右の余白を少し減らす (画面いっぱいに表示するため) */
+    .container {
+        padding: 20px 15px; /* 左右のパディングを減らす */
+        max-width: 90%; /* 画面の90%まで広げる */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    /* 2. ヘッダーとフッターのコンテンツも幅を調整 */
+    .header-content {
+        padding: 0 15px;
+        max-width: none; /* 幅の制限を外し、画面いっぱいに広げる */
+    }
+
+    /* 3. 入力エリアを縦並びにする (最も重要) */
+    .input-area {
+        flex-direction: column; /* 縦並びにする */
+        gap: 10px; /* 要素間の縦の隙間を調整 */
+    }
+    
+    /* 4. 入力フィールドとボタンを画面幅いっぱいに広げる */
+    #todo-input {
+        width: 100%; 
+        box-sizing: border-box; /* paddingを含めた幅を100%にする */
+        margin-bottom: 0; /* 下のマージンを削除 */
+    }
+
+    /* 5. ボタンも幅いっぱいに広げる */
+    #add-button, 
+    #reset-button {
+        width: 100%;
+        margin-left: 0; /* 横並びのときのマージンを削除 */
+    }
+}

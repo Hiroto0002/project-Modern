@@ -8,7 +8,7 @@ const gaugeFill = document.getElementById('storage-gauge-fill');
 const sizeText = document.getElementById('storage-size-text');
 const resetButton = document.getElementById('reset-button');
 
-const MAX_STORAGE_BYTES = 200; // ゲージの最大容量 (約5MB)
+const MAX_STORAGE_BYTES = 600; // ゲージの最大容量 (約5MB)
 
 // =================================================================
 // 2. ストレージ容量計算とゲージ表示の関数
