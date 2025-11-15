@@ -6,6 +6,7 @@ const addButton = document.getElementById('add-button');
 const todoList = document.getElementById('todo-list');
 const gaugeFill = document.getElementById('storage-gauge-fill');
 const sizeText = document.getElementById('storage-size-text');
+const resetButton = document.getElementById('reset-button');
 
 const MAX_STORAGE_BYTES = 200; // ゲージの最大容量 (約5MB)
 
@@ -88,7 +89,27 @@ function loadTasks() {
 }
 
 // =================================================================
-// 4. HTML要素の生成・操作関数
+// 4. リセットボタン作成
+// =================================================================
+
+function resetAll() {
+    // 1. localStorageからタスクデータを完全に削除
+    localStorage.removeItem('tasks');
+
+    // 2. 画面上のタスクリスト (<ul>) の中身を空にする
+    todoList.innerHTML = '';
+
+    // 3. ゲージとテキストをリセットした状態に更新
+    //    (displayStorageSizeはlocalStorage全体を見て計算するため、
+    //     tasksを削除した後に呼び出せば、サイズ0の状態になります)
+    displayStorageSize();
+
+    // ユーザーにリセット完了を通知 (オプション)
+    alert('すべてのタスクとストレージ使用量をリセットしました！');
+}
+
+// =================================================================
+// 5. HTML要素の生成・操作関数
 // =================================================================
 
 function createTaskElement(text, isCompleted) {
@@ -140,7 +161,7 @@ function addTask() {
 
 
 // =================================================================
-// 5. イベントリスナーとアプリの起動処理 (すべてここに集約)
+// 6. イベントリスナーとアプリの起動処理 (すべてここに集約)
 // =================================================================
 
 // 「追加」ボタンのクリックイベント
@@ -159,3 +180,5 @@ document.addEventListener('DOMContentLoaded', function() {
     displayStorageSize(); 
 });
 
+// RESETボタンのクリックイベント
+resetButton.addEventListener('click', resetAll);
