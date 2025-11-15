@@ -3,12 +3,14 @@
 2025/11/12
 このサイトは HTML,CSS,JavaScript だけを使用し理解力を深めるプロジェクトです。
 
+簡単なToDoアプリ
+
 ## 使用言語
 - HTML
 - CSS
 - JavaScript
 
-##　環境
+## 環境
 - VScode
 
 ## 使用した参考資料
